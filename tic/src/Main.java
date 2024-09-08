@@ -8,12 +8,28 @@ public class Main {
                 {' ', ' ', ' '},
                 {' ', ' ', ' '},
         };
-        getLayout(field, scanner);
-        printField(field);
-        makeMove(field, 'X', scanner);
-        printField(field);
 
-//        System.out.println(analyzeField(field));
+
+
+        char currentCharacter = 'X';
+
+        while(true) {
+            printField(field);
+            makeMove(field, currentCharacter, scanner);
+            String gameStatus = analyzeField(field);
+            if(gameStatus == "Game not finished" ) {
+                if(currentCharacter == 'X') {
+                    currentCharacter = 'O';
+                } else {
+                    currentCharacter = 'X';
+                }
+                continue;
+            } else {
+                System.out.println(gameStatus);
+                break;
+            }
+
+        }
 
         scanner.close();
     }
@@ -58,7 +74,7 @@ public class Main {
                 continue;
             }
 
-            if(field[row - 1][col - 1] != '_') {
+            if(field[row - 1][col - 1] != ' ') {
                 System.out.println("This cell is occupied! Choose another one!");
                 continue;
             }
