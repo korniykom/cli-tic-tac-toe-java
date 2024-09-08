@@ -1,17 +1,71 @@
-import java.lang.reflect.Field;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
         char[][] field = {
-                {'_', '_', '_'},
-                {'_', '_', '_'},
-                {'_', '_', '_'},
+                {' ', ' ', ' '},
+                {' ', ' ', ' '},
+                {' ', ' ', ' '},
         };
-
-        getInput(field);
+        getLayout(field, scanner);
         printField(field);
-        System.out.println(analyzeField(field));
+        makeMove(field, 'X', scanner);
+        printField(field);
+
+//        System.out.println(analyzeField(field));
+
+        scanner.close();
+    }
+
+    static void getLayout(char[][] field, Scanner scanner) {
+
+        String input = scanner.nextLine();
+
+        char[] arrayInput = input.toCharArray();
+        for( int row = 0; row < field.length; row++) {
+            for(int col = 0; col < field[0].length;  col++) {
+                field[row][col] = arrayInput[row * 3 + col];
+            }
+        }
+    }
+
+
+    static void makeMove(char[][] field, char character, Scanner scanner) {
+        while(true) {
+            String move = scanner.nextLine();
+            String[] splitMove = move.split(" ");
+
+            if (splitMove.length > 2) {
+                System.out.println("You should enter numbers!");
+                continue;
+            }
+
+            int row;
+            int col;
+
+            try {
+                row = Integer.parseInt(splitMove[0]);
+                col = Integer.parseInt(splitMove[1]);
+
+            } catch (NumberFormatException e) {
+                System.out.println("You should enter numbers!");
+                continue;
+            }
+
+            if (col > 3 || col < 1 || row > 3 || row < 1) {
+                System.out.println("Coordinates should be from 1 to 3!");
+                continue;
+            }
+
+            if(field[row - 1][col - 1] != '_') {
+                System.out.println("This cell is occupied! Choose another one!");
+                continue;
+            }
+
+            field[row - 1][col - 1] = character;
+            break;
+        }
 
     }
 
@@ -61,20 +115,6 @@ public class Main {
         return "Draw";
     }
 
-    static void getInput(char[][] field) {
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.next();
-        scanner.close();
-
-        char[] arrayInput = input.toCharArray();
-        for( int row = 0; row < field.length; row++) {
-            for(int col = 0; col < field[0].length;  col++) {
-                field[row][col] = arrayInput[row * 3 + col];
-            }
-        }
-
-
-    }
 
     static void printField(char[][] field) {
         System.out.println("---------");
